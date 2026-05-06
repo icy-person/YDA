@@ -1,0 +1,31 @@
+[debug] Command-line config: ['-v', '--ignore-errors', '--extractor-args', 'youtube:player_client=android', '-F', 'https://www.youtube.com/watch?v=qtA_KJCwCq8']
+[debug] Encodings: locale UTF-8, fs utf-8, pref UTF-8, out utf-8 (No ANSI), error utf-8 (No ANSI), screen utf-8 (No ANSI)
+[debug] yt-dlp version stable@2026.03.17 from yt-dlp/yt-dlp [04d6974f5] (pip)
+[debug] Python 3.14.4 (CPython x86_64 64bit) - Linux-6.17.0-1010-azure-x86_64-with-glibc2.39 (OpenSSL 3.0.13 30 Jan 2024, glibc 2.39)
+[debug] exe versions: ffmpeg 6.1.1 (setts), ffprobe 6.1.1
+[debug] Optional libraries: sqlite3-3.45.1
+[debug] JS runtimes: none
+[debug] Proxy map: {}
+[debug] Request Handlers: urllib
+[debug] Plugin directories: none
+[debug] Loaded 1864 extractors
+[debug] [youtube] [pot] PO Token Providers: none
+[debug] [youtube] [pot] PO Token Cache Providers: memory
+[debug] [youtube] [pot] PO Token Cache Spec Providers: webpo
+[debug] [youtube] [jsc] JS Challenge Providers: bun (unavailable), deno (unavailable), node (unavailable), quickjs (unavailable)
+[youtube] Extracting URL: https://www.youtube.com/watch?v=qtA_KJCwCq8
+[youtube] qtA_KJCwCq8: Downloading webpage
+[debug] [youtube] Forcing "main" player JS variant for player cb017549
+        original url = /s/player/cb017549/player_es6_tcc.vflset/en_US/base.js
+[youtube] qtA_KJCwCq8: Downloading android player API JSON
+WARNING: [youtube] qtA_KJCwCq8: android client https formats require a GVS PO Token which was not provided. They will be skipped as they may yield HTTP Error 403. You can manually pass a GVS PO Token for this client with --extractor-args "youtube:po_token=android.gvs+XXX". For more information, refer to  https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide
+[debug] Sort order given by extractor: quality, res, fps, hdr:12, source, vcodec, channels, acodec, lang, proto
+[debug] Formats sorted by: hasvid, ie_pref, quality, res, fps, hdr:12(7), source, vcodec, channels, acodec, lang, proto, size, br, asr, vext, aext, hasaud, id
+[info] Available formats for qtA_KJCwCq8:
+ID  EXT   RESOLUTION FPS CH |   FILESIZE  TBR PROTO | VCODEC      ACODEC    ASR MORE INFO
+-----------------------------------------------------------------------------------------------
+sb3 mhtml 48x27        0    |                 mhtml | images                    storyboard
+sb2 mhtml 80x45        0    |                 mhtml | images                    storyboard
+sb1 mhtml 160x90       0    |                 mhtml | images                    storyboard
+sb0 mhtml 320x180      0    |                 mhtml | images                    storyboard
+18  mp4   640x360     30  2 |  220.34MiB 540k https | avc1.42001E mp4a.40.2 22k [ko] 360p, ANDR

@@ -1,0 +1,42 @@
+[debug] Command-line config: ['-v', '--ignore-errors', '--extractor-args', 'youtube:player_client=ios', '-J', 'https://www.youtube.com/watch?v=qtA_KJCwCq8']
+[debug] Encodings: locale UTF-8, fs utf-8, pref UTF-8, out utf-8 (No ANSI), error utf-8 (No ANSI), screen utf-8 (No ANSI)
+[debug] yt-dlp version stable@2026.03.17 from yt-dlp/yt-dlp [04d6974f5] (pip)
+[debug] Python 3.14.4 (CPython x86_64 64bit) - Linux-6.17.0-1010-azure-x86_64-with-glibc2.39 (OpenSSL 3.0.13 30 Jan 2024, glibc 2.39)
+[debug] exe versions: ffmpeg 6.1.1 (setts), ffprobe 6.1.1
+[debug] Optional libraries: sqlite3-3.45.1
+[debug] JS runtimes: none
+[debug] Proxy map: {}
+[debug] Request Handlers: urllib
+[debug] Plugin directories: none
+[debug] Loaded 1864 extractors
+[debug] [youtube] [pot] PO Token Providers: none
+[debug] [youtube] [pot] PO Token Cache Providers: memory
+[debug] [youtube] [pot] PO Token Cache Spec Providers: webpo
+[debug] [youtube] [jsc] JS Challenge Providers: bun (unavailable), deno (unavailable), node (unavailable), quickjs (unavailable)
+[youtube] Extracting URL: https://www.youtube.com/watch?v=qtA_KJCwCq8
+[youtube] qtA_KJCwCq8: Downloading webpage
+[debug] [youtube] Forcing "main" player JS variant for player cb017549
+        original url = /s/player/cb017549/player_es6_tce.vflset/en_US/base.js
+[youtube] qtA_KJCwCq8: Downloading ios player API JSON
+WARNING: [youtube] qtA_KJCwCq8: ios client https formats require a GVS PO Token which was not provided. They will be skipped as they may yield HTTP Error 403. You can manually pass a GVS PO Token for this client with --extractor-args "youtube:po_token=ios.gvs+XXX". For more information, refer to  https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide
+WARNING: [youtube] qtA_KJCwCq8: ios client hls formats require a GVS PO Token which was not provided. They will be skipped as they may yield HTTP Error 403. You can manually pass a GVS PO Token for this client with --extractor-args "youtube:po_token=ios.gvs+XXX". For more information, refer to  https://github.com/yt-dlp/yt-dlp/wiki/PO-Token-Guide
+WARNING: Only images are available for download. use --list-formats to see them
+[debug] Sort order given by extractor: quality, res, fps, hdr:12, source, vcodec, channels, acodec, lang, proto
+[debug] Formats sorted by: hasvid, ie_pref, quality, res, fps, hdr:12(7), source, vcodec, channels, acodec, lang, proto, size, br, asr, vext, aext, hasaud, id
+[debug] Default format spec: bestvideo*+bestaudio/best
+ERROR: [youtube] qtA_KJCwCq8: Requested format is not available. Use --list-formats for a list of available formats
+Traceback (most recent call last):
+  File "/opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/yt_dlp/YoutubeDL.py", line 1698, in wrapper
+    return func(self, *args, **kwargs)
+  File "/opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/yt_dlp/YoutubeDL.py", line 1854, in __extract_info
+    return self.process_ie_result(ie_result, download, extra_info)
+           ~~~~~~~~~~~~~~~~~~~~~~^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^
+  File "/opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/yt_dlp/YoutubeDL.py", line 1913, in process_ie_result
+    ie_result = self.process_video_result(ie_result, download=download)
+  File "/opt/hostedtoolcache/Python/3.14.4/x64/lib/python3.14/site-packages/yt_dlp/YoutubeDL.py", line 3058, in process_video_result
+    raise ExtractorError(
+        'Requested format is not available. Use --list-formats for a list of available formats',
+        expected=True, video_id=info_dict['id'], ie=info_dict['extractor'])
+yt_dlp.utils.ExtractorError: [youtube] qtA_KJCwCq8: Requested format is not available. Use --list-formats for a list of available formats
+
+null
