@@ -43,9 +43,13 @@ jobs:
           git config user.name "github-actions"
           git config user.email "github-actions@github.com"
 
-      - name: Commit and push
+            - name: Commit and push
         run: |
           filename=$(basename "${{ github.event.inputs.file_url }}")
           git add "$filename"
           git commit -m "auto update file: $filename" || echo "No changes to commit"
+
+          # Fix: pull before pushing
+          git pull --rebase --autostash
+
           git push
