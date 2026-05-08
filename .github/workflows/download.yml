@@ -54,7 +54,7 @@ jobs:
       # ==========================================
       - name: Install WGCF
         run: |
-          wget -q https://github.com/ViRb3/wgcf/releases/latest/download/wgcf_2.2.18_linux_amd64 -O wgcf
+          wget -q https://github.com/ViRb3/wgcf/releases/latest/download/wgcf_2.2.30_linux_amd64 -O wgcf
           chmod +x wgcf
           sudo mv wgcf /usr/local/bin/
 
@@ -66,7 +66,10 @@ jobs:
       # ==========================================
       - name: Install WireProxy
         run: |
-          wget -q https://github.com/pufferffish/wireproxy/releases/latest/download/wireproxy-linux-amd64 -O wireproxy
+          wget -q https://github.com/pufferffish/wireproxy/releases/latest/download/wireproxy-linux-amd64 -O wireproxy.tar.gz
+          
+          tar -xzf wireproxy.tar.gz
+          
           chmod +x wireproxy
           sudo mv wireproxy /usr/local/bin/
 
