@@ -1,4 +1,4 @@
-name: Advanced YouTube Search
+name: Advanced YouTube Search (Anti-Bot + WARP)
 
 on:
   workflow_dispatch:
@@ -14,28 +14,119 @@ jobs:
 
     steps:
 
-      - name: Checkout Repository
-        uses: actions/checkout@v4
+      # ==========================================
+      # Checkout Repo
+      # ==========================================
+      - uses: actions/checkout@v4
 
+      # ==========================================
+      # Install yt-dlp + ffmpeg + nodejs
+      # ==========================================
       - name: Install Dependencies
         run: |
           sudo apt-get update
-          sudo apt-get install -y python3-pip ffmpeg
+          sudo apt-get install -y python3-pip ffmpeg nodejs npm
           pip install -U yt-dlp
 
-      - name: Make script executable
-        run: chmod +x youtube_search.sh
-
-      - name: Run YouTube Search
+      # ==========================================
+      # Install WGCF (WARP)
+      # ==========================================
+      - name: Install WGCF
         run: |
+          set -e
+
+          echo "⬇️ Downloading WGCF..."
+          wget -q https://github.com/ViRb3/wgcf/releases/latest/download/wgcf_2.2.30_linux_amd64 -O wgcf
+          chmod +x wgcf
+          sudo mv wgcf /usr/local/bin/
+
+          echo "📝 Registering WGCF..."
+          wgcf register --accept-tos
+          wgcf generate
+
+          echo "✅ WGCF ready"
+
+      # ==========================================
+      # Install WireProxy
+      # ==========================================
+      - name: Install WireProxy
+        run: |
+          set -e
+
+          echo "⬇️ Downloading WireProxy..."
+          wget -q https://github.com/pufferffish/wireproxy/releases/latest/download/wireproxy_linux_amd64.tar.gz -O wireproxy.tar.gz
+          
+          tar -xzf wireproxy.tar.gz
+          
+          chmod +x wireproxy
+          sudo mv wireproxy /usr/local/bin/
+
+          wireproxy --version
+          echo "✅ WireProxy installed"
+
+      # ==========================================
+      # Start WARP Proxy
+      # ==========================================
+      - name: Start WARP
+        run: |
+          set -e
+
+          mkdir -p warp
+
+          PRIVATE_KEY=$(grep PrivateKey wgcf-profile.conf | awk '{print $3}')
+          PUBLIC_KEY=$(grep PublicKey wgcf-profile.conf | awk '{print $3}')
+          ENDPOINT=$(grep Endpoint wgcf-profile.conf | awk '{print $3}')
+
+          cat > warp/config.ini << EOF
+          [Interface]
+          PrivateKey = $PRIVATE_KEY
+          Address = 172.16.0.2/32
+          DNS = 1.1.1.1
+          MTU = 1280
+
+          [Peer]
+          PublicKey = $PUBLIC_KEY
+          Endpoint = $ENDPOINT
+          AllowedIPs = 0.0.0.0/0
+
+          [Socks5]
+          BindAddress = 127.0.0.1:1080
+          EOF
+
+          echo "🚀 Starting WireProxy..."
+          nohup wireproxy -c warp/config.ini > warp.log 2>&1 &
+
+          sleep 8
+
+          echo "🌍 Testing WARP IP..."
+          curl --socks5 127.0.0.1:1080 https://ipinfo.io || echo "⚠️ IP test failed"
+
+          echo "✅ WARP active"
+
+      # ==========================================
+      # Load Cookies if provided
+      # ==========================================
+      - name: Load Cookies
+        run: |
+          if [ -n "${{ secrets.YOUTUBE_COOKIES }}" ]; then
+            echo "${{ secrets.YOUTUBE_COOKIES }}" > cookies.txt
+            echo "🍪 Cookies loaded"
+          else
+            echo "No cookies provided"
+          fi
+
+      # ==========================================
+      # Run YouTube Search
+      # ==========================================
+      - name: Run Search
+        run: |
+          chmod +x youtube_search.sh
           ./youtube_search.sh "${{ github.event.inputs.query }}"
 
-      - name: Show Results
-        run: |
-          echo "=========== RESULTS ==========="
-          cat youtube_results.txt
-
-      - name: Upload Results File
+      # ==========================================
+      # Upload Results
+      # ==========================================
+      - name: Upload Results
         uses: actions/upload-artifact@v4
         with:
           name: youtube-search-results
