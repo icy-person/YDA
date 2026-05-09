@@ -1,0 +1,79 @@
+name: Linux GUI Desktop
+
+on:
+  workflow_dispatch:
+
+jobs:
+  desktop:
+    runs-on: ubuntu-latest
+    timeout-minutes: 360
+
+    steps:
+
+    - name: Update system
+      run: sudo apt update
+
+    - name: Install desktop environment
+      run: |
+        sudo apt install -y \
+          xfce4 xfce4-goodies \
+          x11vnc xvfb \
+          firefox \
+          chromium-browser \
+          git curl wget \
+          net-tools \
+          python3 \
+          unzip
+
+    - name: Install noVNC
+      run: |
+        git clone https://github.com/novnc/noVNC.git
+        git clone https://github.com/novnc/websockify.git noVNC/utils/websockify
+
+    - name: Set VNC password
+      run: |
+        mkdir -p ~/.vnc
+        x11vnc -storepasswd 123456 ~/.vnc/passwd
+
+    - name: Start virtual display
+      run: |
+        export DISPLAY=:99
+
+        Xvfb :99 -screen 0 1280x800x24 &
+        sleep 3
+
+        startxfce4 &
+        sleep 5
+
+    - name: Start VNC server
+      run: |
+        export DISPLAY=:99
+
+        x11vnc \
+          -display :99 \
+          -rfbauth ~/.vnc/passwd \
+          -forever \
+          -shared \
+          -rfbport 5900 &
+
+    - name: Start noVNC
+      run: |
+        noVNC/utils/novnc_proxy \
+          --vnc localhost:5900 \
+          --listen 6080 &
+
+    - name: Install Cloudflare Tunnel
+      run: |
+        wget https://github.com/cloudflare/cloudflared/releases/latest/download/cloudflared-linux-amd64.deb
+        sudo dpkg -i cloudflared-linux-amd64.deb
+
+    - name: Create public tunnel
+      run: |
+        cloudflared tunnel --url http://localhost:6080 > tunnel.log 2>&1 &
+        sleep 10
+        cat tunnel.log
+
+    - name: Keep session alive
+      run: |
+        echo "Desktop is running..."
+        sleep 21600
